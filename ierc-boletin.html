@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boletín Dominical — Iglesia Episcopal Reformada de Cuba</title>
+  <style>
+    :root{
+      --paper:#FAF7F2;--paper-2:#F4EFE7;--ink:#1C1A17;--ink-soft:#5C564E;
+      --meta:#746D64;--terracota:#B94E2C;--forest:#2F5B4F;--ochre:#8A6A3B;--line:#E4DCD0;
+    }
+    body{font-family:Georgia,'Times New Roman',serif;background:var(--paper);color:var(--ink);margin:0;padding:0;position:relative}
+    body::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+    
+    header.masthead{display:flex;justify-content:space-between;align-items:center;padding:26px 36px;border-bottom:1px solid var(--line);max-width:1100px;margin:0 auto}
+    header.masthead a{color:var(--ink);text-decoration:none;font-size:16px;letter-spacing:.05em}
+    header.masthead a:hover{color:var(--terracota)}
+
+    .boletin-container{max-width:700px;margin:0 auto;padding:60px 26px 90px}
+    .boletin-header{text-align:center;border-bottom:2px solid var(--forest);padding-bottom:32px;margin-bottom:40px}
+    .iglesia-nombre{font-size:13px;letter-spacing:.25em;text-transform:uppercase;color:var(--forest);display:block;margin-bottom:8px}
+    h1{font-size:38px;line-height:1.2;margin:0 0 12px;font-weight:normal}
+    .edicion-meta{font-size:14px;color:var(--meta);font-style:italic}
+
+    section.seccion-boletin{margin-bottom:40px}
+    section.seccion-boletin h2{font-size:21px;color:var(--forest);border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:16px;font-weight:normal;letter-spacing:.03em}
+    p{font-size:17px;line-height:1.75;color:var(--ink-soft);margin:0 0 18px}
+    ul{margin:0 0 20px;padding-left:22px;color:var(--ink-soft)}
+    li{font-size:16.5px;line-height:1.7;margin-bottom:8px}
+
+    .lecturas-box{background:var(--paper-2);border-left:3px solid var(--terracota);padding:20px 24px;border-radius:0 6px 6px 0;margin:24px 0}
+    .lecturas-box h3{margin:0 0 10px;font-size:17px;color:var(--terracota);font-weight:normal;letter-spacing:.05em;text-transform:uppercase}
+
+    footer{background:var(--paper-2);border-top:1px solid var(--line);padding:36px 26px;text-align:center;margin-top:60px}
+    footer nav{display:flex;justify-content:center;gap:28px;font-size:14.5px}
+    footer a{color:var(--ink);text-decoration:none}
+    footer a:hover{color:var(--terracota)}
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <a href="ierc-index.html"><b>✝ IERC</b> · Cuba</a>
+    <nav style="display:flex;gap:22px">
+      <a href="ierc-index.html#cap-i">Recorrido</a>
+      <a href="ierc-sermones.html">Sermones</a>
+      <a href="ierc-boletin.html" aria-current="page" style="color:var(--terracota)">Boletín</a>
+    </nav>
+  </header>
+
+  <main class="boletin-container">
+    <div class="boletin-header">
+      <span class="iglesia-nombre">Iglesia Episcopal Reformada de Cuba</span>
+      <h1>Boletín Dominical</h1>
+      <span class="edicion-meta">Edición N° 142 · 18 de octubre de 2026 · Tiempo después de Pentecostés</span>
+    </div>
+
+    <!-- CONTENIDO: Estructura real del boletín parroquial semanal -->
+    <section class="seccion-boletin">
+      <h2>I. Lecturas de la Semana</h2>
+      <p>Nos unimos a la Iglesia universal en la lectura continuada de la Escritura según el leccionario del Libro de Oración Común:</p>
+      <div class="lecturas-box">
+        <h3>Lecturas asignadas</h3>
+        <ul>
+          <li><b>Antiguo Testamento:</b> Job 38:1–7 (o Jeremías 31:31–34)</li>
+          <li><b>Salmo responsorial:</b> Salmo 104:1–9, 25</li>
+          <li><b>Epístola:</b> Hebreos 5:1–10</li>
+          <li><b>Santo Evangelio:</b> Marcos 10:35–45</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion-boletin">
+      <h2>II. Intenciones de Oración</h2>
+      <p>Oramos esta semana de manera especial por nuestra diócesis, por los enfermos de nuestra comunidad, por las familias que atraviesan necesidades y por la paz en el mundo.</p>
+      <p><i>«Por nada estéis afanosos, sino sean notorias vuestras peticiones delante de Dios en toda oración y ruego, con acción de gracias.»</i> (Filipenses 4:6)</p>
+    </section>
+
+    <section class="seccion-boletin">
+      <h2>III. Avisos Parroquiales y Agenda</h2>
+      <ul>
+        <li><b>Estudio Bíblico:</b> Miércoles a las 6:30 p.m. vía presencial y enlace comunitario. Continuamos con la Carta a los Romanos.</li>
+        <li><b>Escuela Dominical:</b> Domingo próximo a las 9:00 a.m. antes de la Eucaristía principal.</li>
+        <li><b>Jornada de limpieza y mantenimiento del templo:</b> Sábado a partir de las 8:00 a.m. Se agradece la colaboración de todos.</li>
+      </ul>
+    </section>
+
+    <section class="seccion-boletin">
+      <h2>IV. Notas Pastorales</h2>
+      <p><!-- CONTENIDO: Reflexión pastoral breve de la semana pendiente --></p>
+      <p>Recordamos a los hermanos que el sostenimiento de nuestra misión se realiza mediante el aporte voluntario y la ofrenda de amor de cada domingo. Agradecemos su constante fidelidad al servicio del Señor en nuestra tierra cubana.</p>
+    </section>
+  </main>
+
+  <footer>
+    <nav>
+      <a href="ierc-index.html">Portada</a>
+      <a href="ierc-sermones.html">Sermones</a>
+      <a href="ierc-boletin.html">Boletín</a>
+    </nav>
+  </footer>
+</body>
+</html>

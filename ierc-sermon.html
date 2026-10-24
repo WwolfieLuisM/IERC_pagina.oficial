@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El manto que heredamos — Sermón | Iglesia Episcopal Reformada de Cuba</title>
+  <style>
+    :root{
+      --paper:#FAF7F2;--paper-2:#F4EFE7;--ink:#1C1A17;--ink-soft:#5C564E;
+      --meta:#746D64;--terracota:#B94E2C;--forest:#2F5B4F;--ochre:#8A6A3B;--line:#E4DCD0;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:Georgia,'Times New Roman',serif;background:var(--paper);color:var(--ink);margin:0;padding:0;position:relative;overflow-x:hidden}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:multiply;z-index:10;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+    /* Skip link */
+    .skip-link{position:absolute;top:-40px;left:0;background:var(--terracota);color:#fff;padding:8px 16px;text-decoration:none;z-index:100;transition:top .2s}
+    .skip-link:focus{top:0}
+
+    /* Masthead */
+    header.masthead{display:flex;justify-content:space-between;align-items:center;padding:26px 36px;border-bottom:1px solid var(--line);max-width:1100px;margin:0 auto}
+    header.masthead a{color:var(--ink);text-decoration:none;font-size:16px;letter-spacing:.05em}
+    header.masthead a:hover{color:var(--terracota)}
+    header.masthead nav{display:flex;gap:22px}
+
+    /* Animaciones */
+    .m4-w{display:inline-block;opacity:0;animation:m4WordIn .9s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(var(--i)*80ms + .1s)}
+    @keyframes m4WordIn{from{opacity:0;transform:translateY(.5em);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+    .m4-fade{opacity:0;animation:m4FadeUp .9s cubic-bezier(.22,1,.36,1) forwards}
+    @keyframes m4FadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    @supports (animation-timeline:view()){
+      .m4-rv{opacity:0;animation:m4FadeUp linear both;animation-timeline:view();animation-range:entry 6% cover 30%}
+    }
+
+    /* Artículo */
+    .m4-art{max-width:66ch;margin:0 auto;padding:60px 26px 60px}
+    .m4-label{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--terracota);font-weight:bold}
+    .m4-meta{font-size:13.5px;color:var(--meta);margin-top:18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+    .m4-meta b{color:var(--forest);font-weight:normal;font-style:italic}
+    .m4-h1{font-size:48px;line-height:1.08;margin:18px 0 0;letter-spacing:-.01em;font-weight:normal}
+    .m4-rule{width:64px;height:2px;background:var(--forest);margin:28px 0 36px;transform:scaleX(0);transform-origin:left;
+      animation:m4Rule .8s cubic-bezier(.22,1,.36,1) .7s forwards}
+    @keyframes m4Rule{to{transform:scaleX(1)}}
+
+    .m4-art p{font-size:17.5px;line-height:1.8;color:#3A362F;margin:0 0 24px}
+    .m4-art .lead{font-size:19px;line-height:1.85;color:var(--ink)}
+    .m4-art .lead::first-letter{float:left;font-size:68px;line-height:.82;padding:6px 12px 0 0;color:var(--terracota);font-weight:bold}
+
+    .m4-art h3{font-size:25px;margin:42px 0 18px;color:var(--ink);font-weight:normal}
+
+    /* Cita bíblica */
+    .m4-verse{margin:38px 0;padding:28px 32px;background:var(--paper-2);border-left:3px solid var(--forest);border-radius:0 6px 6px 0;text-align:center}
+    .m4-verse p{font-size:19px !important;font-style:italic;color:var(--forest) !important;margin:0 !important;line-height:1.65}
+    .m4-verse span{display:block;margin-top:14px;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--meta);font-style:normal}
+
+    /* Cita destacada */
+    .m4-pull{margin:38px 0;padding:8px 0 8px 26px;border-left:3px solid var(--terracota);font-size:21px;line-height:1.55;color:var(--ink);font-style:italic}
+
+    /* Audio */
+    .m4-audio{display:flex;align-items:center;gap:14px;margin:10px 0 34px;padding:16px 20px;border:1px dashed #D8CFC0;border-radius:6px;background:rgba(255,255,255,.6)}
+    .m4-audio .pl{width:36px;height:36px;border-radius:50%;background:var(--forest);color:var(--paper);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+    .m4-audio .tr{flex:1;height:3px;background:var(--line);border-radius:99px;position:relative}
+    .m4-audio .tr::after{content:"";position:absolute;left:0;top:0;bottom:0;width:32%;background:var(--terracota);border-radius:99px}
+    .m4-audio small{font-size:12px;color:var(--meta);font-family:Georgia,serif}
+
+    /* Navegación inferior */
+    .m4-nav{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:28px;margin-top:42px}
+    .m4-nav a{font-size:14.5px;color:var(--ink);text-decoration:none;transition:transform .35s cubic-bezier(.22,1,.36,1),color .3s;max-width:44%}
+    .m4-nav a:hover{color:var(--terracota);transform:translateX(4px)}
+    .m4-nav a.prev:hover{transform:translateX(-4px)}
+    .m4-nav small{display:block;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--meta);margin-bottom:6px}
+
+    /* Más sermones */
+    .m4-more{background:var(--paper-2);border-top:1px solid var(--line);padding:32px 26px 40px}
+    .m4-more .container{max-width:66ch;margin:0 auto}
+    .m4-more .title{font-size:17px;margin-bottom:14px;color:var(--ink)}
+    .m4-more .row{display:flex;gap:14px;align-items:baseline;font-size:14.5px;padding:10px 12px;margin:0 -12px;border-radius:4px;
+      transition:background .3s,transform .3s cubic-bezier(.22,1,.36,1);text-decoration:none;color:inherit;position:relative}
+    .m4-more .row:hover{background:rgba(47,91,79,.07);transform:translateX(6px)}
+    .m4-more .row .arw{position:absolute;right:12px;opacity:0;transform:translateX(-8px);transition:all .3s;color:var(--forest)}
+    .m4-more .row:hover .arw{opacity:1;transform:none}
+    .m4-more .d{font-size:12px;color:var(--meta);min-width:92px}
+
+    /* Pie */
+    footer.pie{background:var(--paper-2);border-top:1px solid var(--line);padding:42px 26px;text-align:center;margin-top:0}
+    footer.pie .pie-nombre{font-size:16px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 6px}
+    footer.pie .pie-slogan{font-size:14px;color:var(--ink-soft);margin:0 0 18px;font-style:italic}
+    footer.pie nav{display:flex;justify-content:center;gap:28px;font-size:14.5px;flex-wrap:wrap}
+    footer.pie nav a{color:var(--ink);text-decoration:none}
+    footer.pie nav a:hover{color:var(--terracota)}
+
+    @media (max-width:640px){ 
+      header.masthead{padding:18px 22px;flex-direction:column;gap:12px}
+      header.masthead nav{gap:16px}
+      .m4-h1{font-size:36px} 
+      .m4-art .lead::first-letter{font-size:56px} 
+      .m4-nav{flex-direction:column}
+      .m4-nav a{max-width:100%}
+      .m4-more .row{flex-direction:column;gap:4px}
+      .m4-more .row .d{min-width:auto}
+    }
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none!important;transition:none!important}
+      .m4-w,.m4-fade,.m4-rv{opacity:1!important;transform:none!important;filter:none!important}
+      .m4-rule{transform:scaleX(1)!important}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="masthead">
+    <a href="ierc-index.html"><b>✝ IERC</b> · Cuba</a>
+    <nav aria-label="Principal">
+      <a href="ierc-index.html#cap-i">Recorrido</a>
+      <a href="ierc-sermones.html">Sermones</a>
+      <a href="ierc-boletin.html">Boletín</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="m4-art">
+      <div class="m4-fade" style="animation-delay:.05s"><span class="m4-label">Sermón · 18 de octubre de 2026</span></div>
+      <h1 class="m4-h1">
+        <span class="m4-w" style="--i:0">El</span>
+        <span class="m4-w" style="--i:1">manto</span>
+        <span class="m4-w" style="--i:2">que</span>
+        <span class="m4-w" style="--i:3">heredamos</span>
+      </h1>
+      <div class="m4-meta m4-fade" style="animation-delay:.5s">
+        <span>Por <b>el Rev. Marcos Hernández</b></span>
+        <span>2 Reyes 2:13–14</span>
+        <span>6 min de lectura</span>
+      </div>
+      <div class="m4-rule"></div>
+
+      <!-- hueco audio -->
+      <div class="m4-audio m4-rv">
+        <div class="pl">▶</div>
+        <div class="tr"></div>
+        <small>Audio del sermón — pronto</small>
+      </div>
+
+      <!-- CONTENIDO: sermón real pendiente -->
+      <p class="lead m4-rv">Eliséo recoge el manto que deja Elías y, sin decir una palabra, vuelve al río. Golpea las aguas con aquella prenda y el Jordan se abre como la primera vez. La escena es corta, casi rutinaria, pero guarda el corazón de lo que somos: una iglesia que recibe y continúa.</p>
+
+      <p class="m4-rv">Nuestros mayores hicieron lo mismo. No empezaron de cero; recibieron un manto —una forma de orar, un libro, una costumbre— y lo hicieron nuestro. Cuando abrimos el Libro de Oración Común abrimos también ese mismo manto.</p>
+
+      <div class="m4-verse m4-rv">
+        <p>«Elías, al ser subido al cielo en un torbellino, dejó su manto a Eliséo; y este, tomándolo, golpeó las aguas del Jordán.»</p>
+        <span>2 Reyes 2:13–14 (Reina-Valera)</span>
+      </div>
+
+      <h3 class="m4-rv">Lo que se hereda no se inventa</h3>
+      <p class="m4-rv">Hay una tentación moderna de reinventarlo todo: nuevos himnos, nuevas fórmulas, nuevas prisas. Pero la fe que recibimos tiene forma. Se hereda como se hereda una casa: con llaves, con memoria y con la obligación de cuidarla para quien venga después.</p>
+
+      <div class="m4-pull m4-rv">«No somos dueños del manto: somos su penúltimos guardianes.»</div>
+
+      <p class="m4-rv">Por eso volvemos cada domingo al mismo texto, con las mismas palabras viejas. No por costumbre muerta, sino porque esas palabras nos mantienen conectados con quienes nos precedieron y con quienes llegarán después de nosotros.</p>
+
+      <!-- navegación -->
+      <nav class="m4-nav m4-rv" aria-label="Navegación entre sermones">
+        <a class="prev" href="ierc-sermones.html"><small>← Volver al archivo</small>Ver todos los sermones</a>
+        <a href="ierc-sermones.html" style="text-align:right"><small>Sermón siguiente →</small>«La costumbre de volver»</a>
+      </nav>
+    </article>
+
+    <!-- más sermones -->
+    <section class="m4-more">
+      <div class="container">
+        <div class="title">Más sermones</div>
+        <a class="row" href="ierc-sermones.html"><span class="d">11 oct 2026</span><span>«Orar con las manos limpias»</span><span class="arw">→</span></a>
+        <a class="row" href="ierc-sermones.html"><span class="d">4 oct 2026</span><span>«La costumbre de volver»</span><span class="arw">→</span></a>
+        <a class="row" href="ierc-sermones.html"><span class="d">27 sep 2026</span><span>«El río que no cambia»</span><span class="arw">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p class="pie-nombre">Iglesia Episcopal Reformada de Cuba</p>
+    <p class="pie-slogan">Evangélicos, bíblicos y litúrgicos</p>
+    <!-- PIE: horario real pendiente -->
+    <!-- PIE: dirección real pendiente -->
+    <!-- PIE: contacto real pendiente -->
+    <nav aria-label="Enlaces del pie">
+      <a href="ierc-index.html#cap-i">El recorrido</a>
+      <a href="ierc-sermones.html">Sermones</a>
+      <a href="ierc-boletin.html">Boletín</a>
+    </nav>
+  </footer>
+</body>
+</html>

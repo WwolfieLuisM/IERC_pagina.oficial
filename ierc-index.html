@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iglesia Episcopal Reformada de Cuba — Blog</title>
+  <style>
+    /* ——— tokens (paleta literal spec §6 — gana a los mockups) ——— */
+    :root{
+      --paper:#FAF7F2;
+      --paper-2:#F4EFE7;
+      --ink:#1C1A17;
+      --ink-soft:#5C564E;
+      --meta:#746D64;
+      --terracota:#B94E2C;
+      --forest:#2F5B4F;
+      --ochre:#8A6A3B;
+      --line:#E4DCD0;
+      --ease:cubic-bezier(.22,1,.36,1);   /* entradas */
+      --spring:cubic-bezier(.34,1.56,.64,1); /* rebotes */
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    html,body{margin:0}
+    body{
+      font-family:Georgia,'Times New Roman',serif;
+      background:var(--paper);
+      color:var(--ink);
+      line-height:1.55;
+      overflow-x:hidden;          /* sin scroll horizontal (regla carpeta) */
+      padding-top:49px;           /* hueco del masthead fijo */
+    }
+
+    /* ——— grano de papel SVG al 5% multiply ——— */
+    body::after{
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+      opacity:.05;mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* ——— foco visible en todo lo interactivo ——— */
+    :focus-visible{outline:2px solid var(--terracota);outline-offset:3px}
+    :focus:not(:focus-visible){outline:none}
+
+    /* ——— skip link ——— */
+    .skip-link{position:fixed;left:1rem;top:-4rem;z-index:99;padding:.7rem 1rem;
+      background:var(--terracota);color:var(--paper);font-weight:bold;
+      text-decoration:none;transition:top .2s var(--ease)}
+    .skip-link:focus{top:.5rem}
+
+    /* ——— masthead fijo ——— */
+    .masthead{position:fixed;top:0;left:0;right:0;z-index:20;
+      display:flex;justify-content:space-between;align-items:center;gap:1rem;
+      padding:14px 26px;background:var(--paper);border-bottom:1px solid var(--line)}
+    .masthead .marca{font-size:15px;letter-spacing:.1em;text-transform:uppercase;
+      font-weight:bold;color:var(--ink);text-decoration:none}
+    .masthead nav{display:flex;gap:1rem}
+    .masthead nav a{font-size:13px;color:var(--meta);text-decoration:none;
+      padding:.25rem .1rem}
+    .masthead nav a:hover{color:var(--terracota)}
+
+    /* ——— entrada hero (wordIn escalonado) ——— */
+    .word{display:inline-block;opacity:0;
+      animation:wordIn .9s var(--ease) forwards;
+      animation-delay:calc(var(--i)*90ms + .15s)}
+    @keyframes wordIn{
+      from{opacity:0;transform:translateY(.5em);filter:blur(10px)}
+      to{opacity:1;transform:none;filter:none}}
+    .fade{opacity:0;animation:fadeUp .9s var(--ease) forwards}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    .filete-verde{transform:scaleX(0);animation:filete .8s var(--ease) .9s forwards}
+    @keyframes filete{to{transform:scaleX(1)}}
+
+    /* ——— hero ——— */
+    .hero{padding:64px 26px 60px;text-align:center;
+      background:linear-gradient(180deg,var(--paper),var(--paper-2))}
+    .hero-nombre{margin:0;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--meta)}
+    .hero .etiqueta{animation-delay:.05s;margin:14px 0 0;font-size:12px;
+      letter-spacing:.28em;text-transform:uppercase;font-weight:bold;color:var(--terracota)}
+    .hero h1{font-weight:normal;font-size:clamp(2rem,7vw,52px);line-height:1.06;
+      margin:18px auto 0;max-width:16ch}
+    .hero .filete-verde{width:64px;height:2px;background:var(--forest);
+      margin:26px auto;transform-origin:center;border:0}
+    .hero .lead{animation-delay:.75s;font-size:17px;line-height:1.7;color:var(--ink-soft);
+      max-width:52ch;margin:0 auto}
+    /* slogan bajo el lead, con filetes a los lados */
+    .hero .slogan{animation-delay:.85s;display:flex;align-items:center;gap:16px;
+      justify-content:center;margin:22px auto 0;max-width:34ch;
+      font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--forest)}
+    .hero .slogan .lado{flex:1;height:1px;background:var(--line);min-width:20px}
+    .hero .cta-envoltura{animation-delay:.95s;margin-top:32px}
+
+    /* ——— CTA: brillo barrido al hover ——— */
+    .cta{position:relative;display:inline-block;overflow:hidden;
+      background:var(--terracota);color:var(--paper);
+      font-size:15px;padding:14px 34px;border-radius:2px;letter-spacing:.02em;
+      text-decoration:none;cursor:pointer;border:0;
+      transition:transform .35s var(--spring),box-shadow .35s var(--ease);
+      box-shadow:0 2px 0 rgba(28,26,23,.3)}
+    .cta::before{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;
+      background:linear-gradient(105deg,transparent,rgba(255,255,255,.35),transparent);
+      transform:skewX(-18deg);transition:left .6s var(--ease)}
+    .cta:hover{transform:translateY(-3px);
+      box-shadow:0 8px 22px -6px rgba(185,78,44,.55)}
+    .cta:hover::before{left:130%}
+    .cta:active{transform:translateY(-1px)}
+
+    /* ——— marcador lateral de capítulos ——— */
+    .marcador{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:15;
+      display:flex;flex-direction:column;align-items:center;gap:10px}
+    .marcador .linea{width:1px;height:34px;background:var(--line)}
+    .marcador a{display:block;padding:4px;border-radius:50%;text-decoration:none}
+    .punto{display:block;width:8px;height:8px;border-radius:50%;background:var(--line)}
+    /* loop 1 de 2: pulso del punto activo */
+    .punto.activo{background:var(--terracota);
+      animation:latido 2.6s ease-in-out infinite}
+    @keyframes latido{
+      0%,100%{box-shadow:0 0 0 0 rgba(185,78,44,.45)}
+      55%{box-shadow:0 0 0 7px rgba(185,78,44,0)}}
+    @media (max-width:900px){.marcador{display:none}}
+
+    /* ——— ornamento ❦ ——— */
+    /* loop 2 de 2 (los dos únicos loops continuos): ❦ flotante */
+    .ornamento{display:block;text-align:center;font-size:20px;color:var(--forest);
+      opacity:.75;user-select:none;margin:36px 0 8px;
+      animation:flotar 5s ease-in-out infinite}
+    @keyframes flotar{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+    /* ——— base de secciones ——— */
+    .capitulo{padding:50px 26px 36px;max-width:860px;margin-inline:auto;
+      scroll-margin-top:64px}   /* hueco del masthead fijo al navegar por anclas */
+    /* ——— franja de sermones recientes ——— */
+    .franja-sermones{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .fila-sermon:hover{transform:translateX(6px);border-color:var(--terracota)!important}
+    .fila-sermon:hover span:last-child{transform:translateX(4px)}
+
+    /* ——— capítulos I·II·III en lectura completa ——— */
+    .cap{--acento:var(--terracota)}   /* acento por capítulo: I terracota, II verde, III ocre */
+    .cap-enc{display:flex;gap:22px;align-items:flex-start;
+      border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:30px;
+      border-radius:4px;
+      transition:padding-left .45s var(--ease),background .45s}
+    .cap:hover .cap-enc{padding-left:10px;
+      background:linear-gradient(90deg,rgba(185,78,44,.05),transparent 70%)}
+    .cap-num{font-size:64px;line-height:.9;min-width:70px;color:var(--acento);
+      transition:transform .45s var(--spring)}
+    .cap:hover .cap-num{transform:translateY(-4px) rotate(-3deg)}
+    .cap-titulo{font-size:27px;line-height:1.2;margin:0;padding-top:6px;
+      font-weight:normal;transition:color .3s}
+    .cap:hover .cap-titulo{color:var(--terracota)}
+    .cap p{font-size:17.5px;line-height:1.8;color:var(--ink-soft);margin:0 0 22px}
+    .cap .lead::first-letter{float:left;font-size:64px;line-height:.82;
+      padding:6px 12px 0 0;color:var(--acento);font-weight:bold}   /* capitular */
+    .cap .subtitulo{font-size:23px;margin:38px 0 16px;color:var(--ink);font-weight:normal}
+    /* cita bílica centrada con borde verde (patrón sermon-vista) */
+    .cita{margin:34px 0;padding:26px 30px;background:var(--paper-2);
+      border-left:3px solid var(--forest);border-radius:0 6px 6px 0;text-align:center}
+    .cita p{font-size:19px;font-style:italic;color:var(--forest);margin:0;line-height:1.65}
+    .cita cite{display:block;margin-top:12px;font-size:12.5px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--meta);font-style:normal}
+    /* pull quote con filete terracota */
+    .pull{margin:34px 0;padding:6px 0 6px 24px;border-left:3px solid var(--terracota);
+      font-size:21px;line-height:1.55;color:var(--ink);font-style:italic}
+    /* reveal por scroll con fallback seguro: el estado oculto vive SOLO dentro de @supports */
+    @supports (animation-timeline: view()){
+      .rv{opacity:0;animation:fadeUp linear both;
+        animation-timeline:view();animation-range:entry 0% cover 35%}
+    }
+
+    /* ——— pie mínimo (§7.1b) ——— */
+    .pie{background:var(--paper-2);border-top:1px solid var(--line);
+      padding:36px 26px;text-align:center}
+    .pie-nombre{margin:0;font-size:16px;color:var(--ink)}
+    .pie-slogan{margin:6px 0 0;font-size:13px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--forest)}
+    .pie nav{margin-top:18px;display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
+    .pie nav a{font-size:14px;color:var(--ink-soft);text-decoration:none;
+      border-bottom:1px solid var(--line);padding-bottom:2px}
+    .pie nav a:hover{color:var(--terracota);border-color:var(--terracota)}
+
+    /* ——— reduced motion: sin loops, sin reveals, contenido 100% visible ——— */
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important}
+      html{scroll-behavior:auto}
+      .word,.fade,.rv{opacity:1!important;transform:none!important;filter:none!important}
+      .filete-verde{transform:scaleX(1)!important}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- Masthead fijo -->
+  <header class="masthead">
+    <a class="marca" href="ierc-index.html">✝ IERC</a>
+    <nav aria-label="Principal">
+      <a href="ierc-sermones.html">Sermones</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="titulo-principal">
+      <!-- FOTO: pendiente — hueco para foto antigua de la iglesia, sin imagen inventada -->
+      <p class="hero-nombre fade">Iglesia Episcopal Reformada de Cuba</p>
+      <p class="etiqueta fade">Capítulo I — Los orígenes</p>
+      <h1 id="titulo-principal">
+        <span class="word" style="--i:0">Así</span>
+        <span class="word" style="--i:1">nació</span>
+        <span class="word" style="--i:2">nuestra</span>
+        <span class="word" style="--i:3">iglesia</span>
+      </h1>
+      <hr class="filete-verde">
+      <p class="lead fade">Nuestra historia, nuestras costumbres y la forma en que oramos con el Libro de Oración Común — contadas de corrido, como se viven.</p>
+      <p class="slogan fade">
+        <span class="lado" aria-hidden="true"></span>
+        Evangélicos, bíblicos y litúrgicos
+        <span class="lado" aria-hidden="true"></span>
+      </p>
+      <p class="cta-envoltura fade">
+        <a class="cta" href="#cap-i">Comenzar el recorrido ↓</a>
+      </p>
+    </section>
+
+    <!-- Capítulos del recorrido (texto de muestra — reemplazar por la historia real) -->
+    <section id="cap-i" class="capitulo cap" style="--acento:var(--terracota)" aria-label="Capítulo I: Los orígenes">
+      <header class="cap-enc rv">
+        <div class="cap-num" aria-hidden="true">I</div>
+        <h2 class="cap-titulo">Así nació nuestra iglesia</h2>
+      </header>
+      <!-- CONTENIDO: historia real pendiente -->
+      <p class="lead rv">Toda iglesia empieza con alguien que se atreve a abrir las puertas. La nuestra nació del deseo de tener un lugar donde la fe cristiana se celebrara con orden, con belleza y con la libertad de un corazón despierto: una iglesia episcopal en su forma y reformada en su confesión, en medio de la vida cubana.</p>
+      <p class="rv">Los primeros pasos fueron sencillos —una comunidad pequeña, un espacio alquilado, la oración constante—, pero lo sencillo, cuando se siembra con paciencia, echa raíz profunda. Aquí se heredó la costumbre de celebrar los Santos Sacramentos, de leer la Escritura de corrido y de no tener prisa con lo sagrado.</p>
+      <h3 class="subtitulo rv">Una fe que llega de lejos y se planta aquí</h3>
+      <p class="rv">Nuestra identidad no se improvisó. Viene de la Iglesia Episcopal y de la gran familia anglicana, y a la vez de la Reforma: la Biblia en el centro, la gracia como regalo y una liturgia que nos ata a la oración de la iglesia de todos los siglos. En Cuba eso encontró acento propio —calor de pueblo, canto sencillo, nombres propios en cada banco— y así lo recibieron los que vinieron después.</p>
+      <blockquote class="cita rv">
+        <p>«Te he puesto hoy sobre las naciones y sobre los reinos, para arrancar y derribar, para destruir y derribar, para edificar y plantar.»</p>
+        <cite>Jeremías 1:10</cite>
+      </blockquote>
+      <p class="rv">Por eso contamos nuestra historia sin prisa y sin adornos: porque no es una historia de grandes hazañas, sino de la fidelidad de Dios sembrada domingo a domingo. Lo que se plantó entonces todavía crece entre nosotros.</p>
+      <blockquote class="pull rv">«La iglesia que heredamos no se guarda en un museo: se vive.»</blockquote>
+    </section>
+
+    <section id="cap-ii" class="capitulo cap" style="--acento:var(--forest)" aria-label="Capítulo II: Nuestra identidad">
+      <header class="cap-enc rv">
+        <div class="cap-num" aria-hidden="true">II</div>
+        <h2 class="cap-titulo">Así nos vestimos</h2>
+      </header>
+      <!-- CONTENIDO: historia real pendiente -->
+      <p class="lead rv">Antes de decir una palabra, la ropa del altar ya está hablando. Los paramentos, sus colores y la forma en que nos acercamos a la mesa cuentan, cada domingo, quién es Dios y quiénes somos nosotros.</p>
+      <p class="rv">Nuestra manera de vestir el culto es sobria y significativa. El alba blanca nos recuerda el bautismo; la estola, la autoridad de quien sirve; los colores litúrgicos —blanco, rojo, verde, morado, violeta o azul según el tiempo del año— marcan el calendario que la iglesia ha rezado durante siglos. Nada está puesto por gusto: todo está puesto para recordar.</p>
+      <h3 class="subtitulo rv">El manto que se recibe y se entrega</h3>
+      <p class="rv">Hay prendas que se heredan. Un paramento que otra mano cosió, un manto que otra generación estrenó: así se transmite entre nosotros la costumbre de lo santo. Vestir el altar es un acto de fe —y también de memoria—, porque honramos a Dios con lo mejor que tenemos, aunque sea poco.</p>
+      <blockquote class="cita rv">
+        <p>«Y harás vestidos sagrados a Aarón tu hermano, para gloria y para hermosura.»</p>
+        <cite>Éxodo 28:2</cite>
+      </blockquote>
+      <p class="rv">Y esa misma reverencia baja del altar a la vida. Nos vestimos para la casa de Dios como quien va a encontrarse con alguien: con orden, con respeto y con el corazón dispuesto. La forma importa porque forma.</p>
+      <blockquote class="pull rv">«Cada color del altar es una palabra de la oración.»</blockquote>
+    </section>
+
+    <section id="cap-iii" class="capitulo cap" style="--acento:var(--ochre)" aria-label="Capítulo III: Nuestra oración">
+      <header class="cap-enc rv">
+        <div class="cap-num" aria-hidden="true">III</div>
+        <h2 class="cap-titulo">Así oramos con el Libro de Oración Común</h2>
+      </header>
+      <!-- CONTENIDO: historia real pendiente -->
+      <p class="lead rv">Orar con el Libro de Oración Común es dejar que la iglesia ore en nosotros. Sus páginas no inventan una oración nueva cada mañana: nos entregan palabras viejas y probadas que el pueblo de Dios ha ido repitiendo hasta hacerlas suyas.</p>
+      <p class="rv">El culto del domingo tiene una estructura que se ha mantenido a través del tiempo: nos reunimos, escuchamos la Escritura, confesamos la fe, oramos por el mundo y por los nuestros, y celebramos la Eucaristía. Nada sobra, nada falta; el orden libera para que la oración sea de todos.</p>
+      <h3 class="subtitulo rv">La oración de la semana, en casa y en el camino</h3>
+      <p class="rv">El Libro de Oración Común no se queda en el edificio. Tiene órdenes para la mañana y para la noche, para los días de fiesta y para los días difíciles; salmos para cuando no hay palabras y lecturas para cuando hay muchas. Muchas familias de nuestra iglesia crecieron con esas páginas abiertas en la mesa de la cocina.</p>
+      <blockquote class="cita rv">
+        <p>«Mañana oirás mi voz; te presentaré mi oración, y te esperaré.»</p>
+        <cite>Salmos 5:3</cite>
+      </blockquote>
+      <p class="rv">Así oramos: con la Biblia abierta y con la voz prestada de la iglesia. Cuando nos falta el fervor, el Libro nos sostiene; cuando nos falta el tiempo, una sola oración basta para volver.</p>
+      <blockquote class="pull rv">«Cuando no encuentres tus palabras, la iglesia te deja las suyas.»</blockquote>
+    </section>
+
+    <span class="ornamento" aria-hidden="true">❦</span>
+
+    <!-- Marcador lateral de capítulos -->
+    <nav class="marcador" aria-label="Capítulos del recorrido">
+      <a href="#cap-i" aria-label="Capítulo I: Los orígenes" aria-current="true"><span class="punto activo" data-cap="cap-i"></span></a>
+      <span class="linea" aria-hidden="true"></span>
+      <a href="#cap-ii" aria-label="Capítulo II: Nuestra identidad"><span class="punto" data-cap="cap-ii"></span></a>
+      <span class="linea" aria-hidden="true"></span>
+      <a href="#cap-iii" aria-label="Capítulo III: Nuestra oración"><span class="punto" data-cap="cap-iii"></span></a>
+    </nav>
+
+    <!-- Franja de sermones recientes -->
+    <section id="sermones-recientes" class="capitulo franja-sermones" aria-label="Sermones recientes">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px">
+        <h2 style="font-size:24px;font-weight:normal;color:var(--ink);margin:0">Sermones recientes</h2>
+        <a href="ierc-sermones.html" style="font-size:14px;color:var(--terracota);text-decoration:none;letter-spacing:.05em">Ver todos →</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <a href="ierc-sermon.html" class="fila-sermon rv" style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;background:var(--paper);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit;transition:transform .3s var(--spring),border-color .3s">
+          <div>
+            <span style="font-size:12.5px;text-transform:uppercase;letter-spacing:.15em;color:var(--meta);display:block;margin-bottom:4px">18 de septiembre de 2026</span>
+            <span style="font-size:18px;color:var(--ink)">La paciencia de la semilla</span>
+          </div>
+          <span style="font-size:20px;color:var(--terracota);transition:transform .3s">→</span>
+        </a>
+        <a href="ierc-sermon.html" class="fila-sermon rv" style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;background:var(--paper);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit;transition:transform .3s var(--spring),border-color .3s">
+          <div>
+            <span style="font-size:12.5px;text-transform:uppercase;letter-spacing:.15em;color:var(--meta);display:block;margin-bottom:4px">11 de septiembre de 2026</span>
+            <span style="font-size:18px;color:var(--ink)">El refugio en la tormenta</span>
+          </div>
+          <span style="font-size:20px;color:var(--terracota);transition:transform .3s">→</span>
+        </a>
+        <a href="ierc-sermon.html" class="fila-sermon rv" style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;background:var(--paper);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit;transition:transform .3s var(--spring),border-color .3s">
+          <div>
+            <span style="font-size:12.5px;text-transform:uppercase;letter-spacing:.15em;color:var(--meta);display:block;margin-bottom:4px">4 de septiembre de 2026</span>
+            <span style="font-size:18px;color:var(--ink)">Luz en el umbral</span>
+          </div>
+          <span style="font-size:20px;color:var(--terracota);transition:transform .3s">→</span>
+        </a>
+      </div>
+    </section>
+    <section id="sermones-recientes" class="franja-sermones" aria-label="Sermones recientes">
+      <!-- Task 3 añade la franja -->
+    </section>
+  </main>
+
+  <!-- Pie mínimo (§7.1b), sin datos inventados -->
+  <footer class="pie">
+    <p class="pie-nombre">Iglesia Episcopal Reformada de Cuba</p>
+    <p class="pie-slogan">Evangélicos, bíblicos y litúrgicos</p>
+    <!-- PIE: horario real pendiente -->
+    <!-- PIE: dirección real pendiente -->
+    <!-- PIE: contacto real pendiente -->
+    <nav aria-label="Enlaces del pie">
+      <a href="#cap-i">El recorrido</a>
+      <a href="ierc-sermones.html">Sermones</a>
+    </nav>
+  </footer>
+
+  <script>
+    // Scroll-spy del marcador: marca el punto del capítulo que atraviesa el centro de la pantalla.
+    (function () {
+      var secciones = document.querySelectorAll('.capitulo.cap');
+      var puntos = document.querySelectorAll('.marcador .punto');
+      if (!('IntersectionObserver' in window) || !secciones.length || !puntos.length) return;
+
+      function marcar(id) {
+        for (var i = 0; i < puntos.length; i++) {
+          var p = puntos[i];
+          var activo = p.getAttribute('data-cap') === id;
+          p.classList.toggle('activo', activo);
+          if (activo) {
+            p.parentNode.setAttribute('aria-current', 'true');
+          } else {
+            p.parentNode.removeAttribute('aria-current');
+          }
+        }
+      }
+
+      var obs = new IntersectionObserver(function (entradas) {
+        for (var i = 0; i < entradas.length; i++) {
+          if (entradas[i].isIntersecting) marcar(entradas[i].target.id);
+        }
+      }, { rootMargin: '-45% 0px -50% 0px' });
+
+      for (var i = 0; i < secciones.length; i++) obs.observe(secciones[i]);
+    })();
+  </script>
+</body>
+</html>
