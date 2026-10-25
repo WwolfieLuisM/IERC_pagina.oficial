@@ -1,6 +1,6 @@
 ---
 title: "PRUEBA TÉCNICA — NO ES CONTENIDO OFICIAL"
-slug: "prueba-tecnica-pages-cms"
+slug: "prueba-tecnica-no-oficial"
 status: draft
 summary: "Registro ficticio para verificar que Pages CMS puede leer y editar contenido en una rama aislada."
 updatedAt: "2026-10-25"
