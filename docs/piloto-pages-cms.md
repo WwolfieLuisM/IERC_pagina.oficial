@@ -1,7 +1,7 @@
 # Piloto técnico de Pages CMS — IERC
 
 **Rama aislada:** `test/pages-cms-pilot`  
-**Estado:** configuración preparada según la documentación pública de Pages CMS; pruebas reales de interfaz y permisos pendientes.  
+**Estado:** controles automáticos aprobados; pruebas reales de interfaz y permisos pendientes.  
 **Regla de seguridad:** no fusionar esta rama con `master` ni configurar esta rama como fuente de publicación de la web pública.
 
 ## Qué se preparó
@@ -14,16 +14,15 @@
 
 La colección usa `slug` como nombre de archivo y valida que tenga formato de URL. El campo `status` solo es metadato editorial: **no impide por sí mismo la publicación**.
 
-## Comprobaciones automáticas añadidas
+## Resultado de CI verificado
 
-El workflow de GitHub Actions debe ejecutarse en pull requests hacia `master` y comprobar:
+- **Workflow:** Pages CMS pilot guard
+- **Ejecución:** [#2](https://github.com/WwolfieLuisM/IERC_pagina.oficial/actions/runs/40179229059)
+- **Commit revisado:** `9fb7592c0884681757dd32750621a15676422650`
+- **Resultado:** `success`
+- **Pasos aprobados:** checkout, control de rutas permitidas, análisis del YAML y comprobación de aislamiento.
 
-1. Los cambios se limitan a los archivos permitidos para el piloto.
-2. La configuración YAML se puede analizar.
-3. La configuración declara una única colección `pilot_content` en `content/cms-pilot`.
-4. La configuración no declara rutas de contenido de producción.
-
-Estas comprobaciones no sustituyen abrir Pages CMS ni verificar sus permisos y su interfaz.
+Esto confirma que el workflow se ejecutó correctamente para ese commit y que las comprobaciones implementadas pasaron. **No** confirma que Pages CMS funcione en el navegador, que sus permisos sean correctos o que exista una barrera de publicación.
 
 ## Pasos manuales obligatorios
 
@@ -42,7 +41,7 @@ Estas comprobaciones no sustituyen abrir Pages CMS ni verificar sus permisos y s
 
 ## Criterios de aprobación
 
-- [ ] El workflow automático pasa y limita los cambios al piloto.
+- [x] El workflow automático pasa y limita los cambios al piloto.
 - [ ] La aplicación reconoce el repositorio y la rama de prueba.
 - [ ] Solo se ve la colección de piloto definida en `.pages.yml`.
 - [ ] Leer, crear, editar y guardar funciona en la rama aislada.
@@ -70,4 +69,4 @@ Estas comprobaciones no sustituyen abrir Pages CMS ni verificar sus permisos y s
 
 ## Resultado
 
-**Pendiente de pruebas manuales.** No declarar el CMS aprobado hasta completar la lista con evidencia.
+**CI aprobado; piloto funcional pendiente de pruebas manuales.** No declarar el CMS aprobado hasta completar la lista con evidencia.
