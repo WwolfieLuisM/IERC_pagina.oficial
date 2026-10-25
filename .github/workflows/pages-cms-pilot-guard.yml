@@ -31,7 +31,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          allowed='^(.pages.yml|content/cms-pilot/.*|media/cms-pilot/.*|docs/piloto-pages-cms.md|.github/workflows/pages-cms-pilot-guard.yml)$'
+          allowed='^(\.pages\.yml|content/cms-pilot/.*|media/cms-pilot/.*|docs/piloto-pages-cms\.md|\.github/workflows/pages-cms-pilot-guard\.yml)$'
           while IFS= read -r path; do
             [[ -z "$path" ]] && continue
             if [[ ! "$path" =~ $allowed ]]; then
