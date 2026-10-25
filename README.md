@@ -319,3 +319,26 @@ Una vez revisado el informe, continuar fase por fase con cambios pequeños, prue
 ## Estado del documento
 
 Este README describe el plan y los criterios del proyecto; no implica que las fases ya se hayan implementado ni que las pruebas estén superadas. El estado real debe actualizarse a partir de evidencias del repositorio y de ejecuciones verificadas.
+
+
+---
+
+## Estado real del trabajo — 25 de octubre de 2026
+
+Este estado diferencia documentación creada de trabajo técnico aún no implementado.
+
+- [x] Plan general integrado en `master`.
+- [x] Fase 0: auditoría estática/documental guardada en [`docs/auditoria-inicial.md`](docs/auditoria-inicial.md).
+- [x] Fase 1 documental: comparación de CMS y recomendación de piloto en [`docs/decision-cms.md`](docs/decision-cms.md).
+- [x] Modelo lógico de contenidos en [`docs/esquema-contenidos.md`](docs/esquema-contenidos.md).
+- [ ] Confirmar desde GitHub Settings → Pages la fuente real de despliegue.
+- [ ] La congregación debe confirmar qué contenido es oficial y designar editores/aprobadores.
+- [ ] Ejecutar y evaluar el piloto técnico de Pages CMS antes de aprobar su integración.
+
+### Resultado de auditoría que condiciona las siguientes fases
+
+Los HTML actuales contienen comentarios explícitos de contenido de muestra o pendiente, incluido el recorrido institucional y sermones. Varias filas del archivo de sermones enlazan al mismo detalle. El código inspeccionado no muestra un CMS ni un panel editorial. **No se debe presentar contenido de muestra como contenido oficial ni afirmar que la publicación sin programar ya está implementada.**
+
+### Próximo paso verificable
+
+Crear una rama de prueba para el piloto de Pages CMS, confirmar los permisos que exige y demostrar el ciclo borrador → revisión → publicación → retirada usando únicamente datos de prueba. No alterar la página pública ni cargar contenido institucional sin aprobación humana.
