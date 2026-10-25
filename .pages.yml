@@ -1,0 +1,54 @@
+media:
+  input: media/cms-pilot
+  output: /media/cms-pilot
+  rename: safe
+  categories:
+    - image
+
+content:
+  - name: pilot_content
+    label: Contenido de prueba (NO OFICIAL)
+    type: collection
+    path: content/cms-pilot
+    filename: "{primary}.md"
+    format: yaml-frontmatter
+    subfolders: false
+    view:
+      primary: title
+      fields:
+        - title
+        - status
+        - updatedAt
+      sort: updatedAt
+      order: desc
+    fields:
+      - name: title
+        label: Título de prueba
+        type: string
+        required: true
+      - name: slug
+        label: Identificador URL
+        type: string
+        required: true
+      - name: status
+        label: Estado editorial
+        type: select
+        required: true
+        options:
+          values:
+            - draft
+            - in_review
+            - published
+            - archived
+      - name: summary
+        label: Resumen de prueba
+        type: text
+      - name: body
+        label: Texto de prueba
+        type: rich-text
+      - name: updatedAt
+        label: Última actualización
+        type: date
+      - name: reviewNotes
+        label: Notas internas de prueba
+        type: text
