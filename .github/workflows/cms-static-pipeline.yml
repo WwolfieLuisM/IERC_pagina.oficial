@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Run CMS regression tests
+        run: node scripts/test-cms-content.mjs
       - name: Validate records and generate JSON
         run: node scripts/build-cms-content.mjs
       - name: Ensure draft content is not exported
