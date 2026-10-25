@@ -1,0 +1,60 @@
+name: Pages CMS pilot guard
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - ".pages.yml"
+      - "content/cms-pilot/**"
+      - "media/cms-pilot/**"
+      - "docs/piloto-pages-cms.md"
+      - ".github/workflows/pages-cms-pilot-guard.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-pilot-scope:
+    name: Verify CMS pilot isolation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reject changes outside pilot paths
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          allowed='^(.pages.yml|content/cms-pilot/.*|media/cms-pilot/.*|docs/piloto-pages-cms.md|.github/workflows/pages-cms-pilot-guard.yml)$'
+          while IFS= read -r path; do
+            [[ -z "$path" ]] && continue
+            if [[ ! "$path" =~ $allowed ]]; then
+              echo "::error::File outside the CMS pilot allowlist: $path"
+              exit 1
+            fi
+          done < <(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          echo "All changed files are within the CMS pilot allowlist."
+
+      - name: Validate Pages CMS YAML and isolation
+        shell: ruby {0}
+        run: |
+          require "yaml"
+          config = YAML.safe_load_file(".pages.yml", permitted_classes: [], aliases: false)
+          abort "Expected exactly one CMS collection" unless config["content"].is_a?(Array) && config["content"].length == 1
+          collection = config["content"].first
+          abort "Unexpected collection name" unless collection["name"] == "pilot_content"
+          abort "Unexpected collection path" unless collection["path"] == "content/cms-pilot"
+          abort "Unexpected media input path" unless config.dig("media", "input") == "media/cms-pilot"
+          fields = collection["fields"].map { |field| field["name"] }
+          %w[title slug status summary body updatedAt reviewNotes].each do |field|
+            abort "Missing expected field: #{field}" unless fields.include?(field)
+          end
+          slug = collection["fields"].find { |field| field["name"] == "slug" }
+          abort "Slug validation pattern missing" unless slug && slug["pattern"] == "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          puts "CMS pilot config parses and remains scoped to the test collection."
