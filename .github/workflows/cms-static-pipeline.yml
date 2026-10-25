@@ -8,6 +8,7 @@ on:
       - "content/cms-pilot/**"
       - "scripts/build-cms-content.mjs"
       - "preview/**"
+      - "docs/integracion-cms-estatica.md"
       - ".github/workflows/cms-static-pipeline.yml"
 
 permissions:
