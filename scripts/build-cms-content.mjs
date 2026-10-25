@@ -3,8 +3,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sourceDir = path.join(root, "content", "cms-pilot");
-const outputFile = path.join(root, "preview", "cms-content.json");
+const sourceDir = process.env.CMS_CONTENT_DIR || path.join(root, "content", "cms-pilot");
+const outputFile = process.env.CMS_OUTPUT_FILE || path.join(root, "preview", "cms-content.json");
 const allowedStatuses = new Set(["draft", "in_review", "published", "archived"]);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
