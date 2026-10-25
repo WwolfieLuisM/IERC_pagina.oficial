@@ -10,7 +10,7 @@ content:
     label: Contenido de prueba (NO OFICIAL)
     type: collection
     path: content/cms-pilot
-    filename: "{primary}.md"
+    filename: "{slug}.md"
     format: yaml-frontmatter
     subfolders: false
     view:
@@ -19,8 +19,13 @@ content:
         - title
         - status
         - updatedAt
-      sort: updatedAt
-      order: desc
+      sort:
+        - updatedAt
+      default:
+        sort: updatedAt
+        order: desc
+    operations:
+      rename: false
     fields:
       - name: title
         label: Título de prueba
@@ -30,16 +35,22 @@ content:
         label: Identificador URL
         type: string
         required: true
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        description: "Solo minúsculas, números y guiones; determina el nombre del archivo."
       - name: status
         label: Estado editorial
         type: select
         required: true
         options:
           values:
-            - draft
-            - in_review
-            - published
-            - archived
+            - name: draft
+              label: Borrador
+            - name: in_review
+              label: En revisión
+            - name: published
+              label: Publicado (solo etiqueta de prueba)
+            - name: archived
+              label: Archivado
       - name: summary
         label: Resumen de prueba
         type: text
