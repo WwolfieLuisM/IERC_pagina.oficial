@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Vista previa CMS — IERC</title>
+  <style>
+    :root{--paper:#FAF7F2;--paper-2:#F4EFE7;--ink:#1C1A17;--ink-soft:#5C564E;--meta:#746D64;--terracota:#B94E2C;--forest:#2F5B4F;--line:#E4DCD0}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.7}
+    header,main,footer{max-width:760px;margin:auto;padding:24px}header{border-bottom:1px solid var(--line);color:var(--meta);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+    h1{font-weight:normal;font-size:clamp(2rem,6vw,3.3rem);line-height:1.1;margin:2rem 0 1rem}p{color:var(--ink-soft)}
+    article{padding:1.5rem 0;border-bottom:1px solid var(--line)}article h2{font-weight:normal;color:var(--forest)}.notice{padding:1rem 1.2rem;background:var(--paper-2);border-left:3px solid var(--terracota)}
+    footer{border-top:1px solid var(--line);font-size:.85rem;color:var(--meta)}
+    :focus-visible{outline:2px solid var(--terracota);outline-offset:3px}
+  </style>
+</head>
+<body>
+  <header>IERC · Entorno aislado de prueba</header>
+  <main>
+    <h1>Vista previa de contenido aprobado</h1>
+    <p>Esta página lee el archivo JSON generado a partir del contenido del CMS. No forma parte de la navegación pública y no debe publicarse como sitio oficial durante el piloto.</p>
+    <div id="estado" class="notice" role="status">Cargando contenido de prueba…</div>
+    <section id="contenido" aria-live="polite"></section>
+  </main>
+  <footer>Vista previa técnica · No es una publicación oficial de la congregación.</footer>
+  <script>
+    const statusNode = document.getElementById("estado");
+    const contentNode = document.getElementById("contenido");
+    fetch("cms-content.json", { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) throw new Error("No se pudo cargar cms-content.json");
+        return response.json();
+      })
+      .then((data) => {
+        contentNode.replaceChildren();
+        if (!Array.isArray(data.items) || data.items.length === 0) {
+          statusNode.textContent = "No hay contenido aprobado para mostrar. Los borradores y elementos en revisión se mantienen fuera de esta vista.";
+          return;
+        }
+        statusNode.textContent = data.count + " publicación(es) aprobada(s) cargada(s) desde el contenido estructurado.";
+        for (const item of data.items) {
+          const article = document.createElement("article");
+          const title = document.createElement("h2");
+          const summary = document.createElement("p");
+          const body = document.createElement("p");
+          const date = document.createElement("small");
+          title.textContent = item.title;
+          summary.textContent = item.summary || "";
+          body.textContent = item.body || "";
+          date.textContent = item.publishedAt || item.updatedAt || "";
+          article.append(title, summary, body, date);
+          contentNode.append(article);
+        }
+      })
+      .catch(() => {
+        statusNode.textContent = "No se pudo cargar la vista previa. Ejecuta el generador de contenido y abre esta página desde un servidor estático local.";
+      });
+  </script>
+</body>
+</html>
