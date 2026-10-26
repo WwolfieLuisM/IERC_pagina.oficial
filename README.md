@@ -331,9 +331,10 @@ Este estado diferencia documentación creada de trabajo técnico aún no impleme
 - [x] Fase 0: auditoría estática/documental guardada en [`docs/auditoria-inicial.md`](docs/auditoria-inicial.md).
 - [x] Fase 1 documental: comparación de CMS y recomendación de piloto en [`docs/decision-cms.md`](docs/decision-cms.md).
 - [x] Modelo lógico de contenidos en [`docs/esquema-contenidos.md`](docs/esquema-contenidos.md).
-- [ ] Confirmar desde GitHub Settings → Pages la fuente real de despliegue.
+- [x] Confirmar desde GitHub Settings → Pages la fuente real de despliegue (API de GitHub, 26 oct 2026: rama `master`, ruta `/`, estado `built`).
+- [x] Fases 2 y 3 técnicas integradas vía PR (#2, #5, #4): piloto aislado, modelo editorial y pipeline estático con tests; ver `docs/fases-implementacion-cms.md`.
 - [ ] La congregación debe confirmar qué contenido es oficial y designar editores/aprobadores.
-- [ ] Ejecutar y evaluar el piloto técnico de Pages CMS antes de aprobar su integración.
+- [ ] Ejecutar y evaluar el piloto técnico de Pages CMS antes de aprobar su integración (CI aprobada; pruebas manuales del editor y permisos pendientes — ver `docs/piloto-pages-cms.md`).
 
 ### Resultado de auditoría que condiciona las siguientes fases
 
@@ -341,4 +342,4 @@ Los HTML actuales contienen comentarios explícitos de contenido de muestra o pe
 
 ### Próximo paso verificable
 
-Crear una rama de prueba para el piloto de Pages CMS, confirmar los permisos que exige y demostrar el ciclo borrador → revisión → publicación → retirada usando únicamente datos de prueba. No alterar la página pública ni cargar contenido institucional sin aprobación humana.
+La rama de prueba `test/pages-cms-pilot` y su CI ya existen y están integradas. Falta la parte manual: seguir la lista de `docs/piloto-pages-cms.md` (abrir Pages CMS, autorizar la GitHub App solo para este repositorio, demostrar el ciclo borrador → revisión → publicación → retirada con datos de prueba, revisar permisos). No alterar la página pública ni cargar contenido institucional sin aprobación humana.
