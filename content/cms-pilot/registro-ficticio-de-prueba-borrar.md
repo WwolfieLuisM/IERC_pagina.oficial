@@ -2,6 +2,6 @@
 title: REGISTRO FICTICIO DE PRUEBA — BORRAR
 slug: registro-ficticio-borrar
 status: draft
-summary: Segundo registro ficticio para probar crear/editar/borrar en el piloto.
+summary: Resumen editado en la fase de edición del piloto (26 oct).
 updatedAt: 2026-10-26
 ---
