@@ -2,15 +2,9 @@ name: CMS static content pipeline
 
 on:
   pull_request:
+  push:
     branches:
-      - feat/cms-content-model
-    paths:
-      - "content/cms-pilot/**"
-      - "scripts/build-cms-content.mjs"
-      - "scripts/test-cms-content.mjs"
-      - "preview/**"
-      - "docs/integracion-cms-estatica.md"
-      - ".github/workflows/cms-static-pipeline.yml"
+      - master
 
 permissions:
   contents: read
@@ -41,3 +35,7 @@ jobs:
             }
             console.log("Build output is valid; internal notes and draft content are not exported.");
           '
+      - name: Regenerate HTML and require zero diff
+        run: |
+          node scripts/build-cms-content.mjs
+          git diff --exit-code -- '*.html'
