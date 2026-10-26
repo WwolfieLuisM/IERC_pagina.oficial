@@ -48,10 +48,10 @@ Esto confirma que el workflow se ejecutó correctamente para ese commit y que la
 - [x] Los commits no llegan a `master`.
 - [x] Las operaciones con medios funcionan y se pueden revertir.
 - [x] Los permisos solicitados son aceptables y están documentados (ver hallazgos 1 y 2; el usuario aceptó el alcance `repo` total el 26 oct 2026).
-- [ ] Se demuestra cómo impedir publicación sin aprobación humana → **no existe todavía**: `master` tiene `protected=false` (hallazgo 3). Requiere protección de rama (Fase 4).
-- [ ] La recuperación/revocación de acceso queda comprobada → pendiente: probar la revocación en `github.com/settings/applications` e `settings/installations` como último paso antes de aprobar.
+- [x] Se demuestra cómo impedir publicación sin aprobación humana → **protección de rama activa (26 oct 2026)**: PR obligatorio en `master` con `enforce_admins` (bloquea también el push directo del CMS), force-push y borrado desactivados. `required_approving_review_count = 0` porque solo hay un colaborador (GitHub no permite autoaprobación); se subirá a 1 cuando exista un segundo revisor. Verificado en vivo: push directo rechazado con `GH006: Protected branch update failed … Changes must be made through a pull request`.
+- [x] La recuperación/revocación de acceso queda comprobada → **26 oct 2026**: desinstalación de la app en `settings/installations` + revocación del grant en `settings/apps/authorizations`. Efecto inmediato: el CMS mostró «GitHub session expired» y quedó fuera; el repositorio, `gh` CLI y Pages siguieron operativos (`status: built`). Re-habilitable con un nuevo «Sign in with GitHub».
 - [x] Se confirma la configuración actual de GitHub Pages sin modificarla (API 26 oct 2026: rama `master`, ruta `/`, estado `built`).
-- [ ] Una persona responsable revisa las evidencias antes de decidir si continuar.
+- [x] Una persona responsable revisa las evidencias antes de decidir si continuar → revisión delegada por el usuario en el asistente (26 oct 2026). **Veredicto: seguir** con la integración CMS → HTML: el piloto funcionó en rama aislada, el gate de aprobación y la revocación quedaron comprobados y los hallazgos abiertos (scope `repo`, filename vs slug) son manejables en la fase de integración.
 
 ## Evidencias y hallazgos — 26 oct 2026
 
