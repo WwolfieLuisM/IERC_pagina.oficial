@@ -9,7 +9,8 @@ const allowedStatuses = new Set(["draft", "in_review", "published", "archived"])
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function parseFrontmatter(source, file) {
-  const normalized = source.replace(/^\uFEFF/, "");
+  // Normaliza CRLF (checkout de Windows con autocrlf) para que el validador funcione igual que en CI.
+  const normalized = source.replace(/^\uFEFF/, "").replace(/\r\n/g, "\n");
   if (!normalized.startsWith("---\n")) throw new Error(`${file}: missing YAML frontmatter opening delimiter`);
   const end = normalized.indexOf("\n---", 4);
   if (end < 0) throw new Error(`${file}: missing YAML frontmatter closing delimiter`);
