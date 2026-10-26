@@ -2,11 +2,13 @@ import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sourceDir = process.env.CMS_CONTENT_DIR || path.join(root, "content", "cms-pilot");
-const outputFile = process.env.CMS_OUTPUT_FILE || path.join(root, "preview", "cms-content.json");
+const cmsRoot = process.env.CMS_ROOT ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const outputFile = path.join(cmsRoot, "preview", "cms-content.json");
 const allowedStatuses = new Set(["draft", "in_review", "published", "archived"]);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+const CLOSED_TOPICS = ["doctrina", "libro-oracion"];
+const collections = ["cms-pilot", "boletines", "sermones"];
 
 function parseFrontmatter(source, file) {
   // Normaliza CRLF (checkout de Windows con autocrlf) para que el validador funcione igual que en CI.
@@ -35,36 +37,61 @@ function requireText(record, key, file) {
   }
 }
 
-await mkdir(path.dirname(outputFile), { recursive: true });
-let filenames = [];
-try {
-  filenames = (await readdir(sourceDir)).filter((name) => name.endsWith(".md")).sort();
-} catch (error) {
-  if (error.code !== "ENOENT") throw error;
+function validateBoletin(data, file) {
+  requireText(data, "editionDate", file);
+  if (!isoDatePattern.test(data.editionDate)) throw new Error(`${file}: editionDate must be an ISO date (yyyy-mm-dd)`);
+  requireText(data, "editionNumber", file);
+  if (!/^\d+$/.test(data.editionNumber) || Number(data.editionNumber) < 1) {
+    throw new Error(`${file}: editionNumber must be an integer >= 1`);
+  }
 }
+
+function validateSermon(data, file) {
+  requireText(data, "sermonDate", file);
+  if (!isoDatePattern.test(data.sermonDate)) throw new Error(`${file}: sermonDate must be an ISO date (yyyy-mm-dd)`);
+  if (data.topic && !CLOSED_TOPICS.includes(data.topic)) {
+    throw new Error(`${file}: topic '${data.topic}' is outside the closed set (${CLOSED_TOPICS.join(", ")})`);
+  }
+}
+
+await mkdir(path.dirname(outputFile), { recursive: true });
 const seenSlugs = new Set();
 const published = [];
-for (const filename of filenames) {
-  const fullPath = path.join(sourceDir, filename);
-  const source = await readFile(fullPath, "utf8");
-  const { data, body } = parseFrontmatter(source, filename);
-  for (const key of ["title", "slug", "status"]) requireText(data, key, filename);
-  if (!slugPattern.test(data.slug)) throw new Error(`${filename}: slug must contain lowercase letters, numbers, and hyphens only`);
-  if (filename !== `${data.slug}.md`) throw new Error(`${filename}: filename must match slug '${data.slug}.md'`);
-  if (seenSlugs.has(data.slug)) throw new Error(`Duplicate slug: ${data.slug}`);
-  seenSlugs.add(data.slug);
-  if (!allowedStatuses.has(data.status)) throw new Error(`${filename}: invalid status '${data.status}'`);
-  if (data.status === "published") {
-    published.push({
-      title: data.title,
-      slug: data.slug,
-      summary: data.summary ?? "",
-      body,
-      updatedAt: data.updatedAt ?? "",
-      publishedAt: data.publishedAt ?? ""
-    });
+let validated = 0;
+for (const collection of collections) {
+  const sourceDir = path.join(cmsRoot, "content", collection);
+  let filenames = [];
+  try {
+    filenames = (await readdir(sourceDir)).filter((name) => name.endsWith(".md")).sort();
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+  for (const filename of filenames) {
+    const file = `${collection}/${filename}`;
+    const source = await readFile(path.join(sourceDir, filename), "utf8");
+    const { data, body } = parseFrontmatter(source, file);
+    for (const key of ["title", "slug", "status"]) requireText(data, key, file);
+    if (!slugPattern.test(data.slug)) throw new Error(`${file}: slug must contain lowercase letters, numbers, and hyphens only`);
+    if (filename !== `${data.slug}.md`) throw new Error(`${file}: filename must match slug '${data.slug}.md'`);
+    if (seenSlugs.has(data.slug)) throw new Error(`Duplicate slug: ${data.slug}`);
+    seenSlugs.add(data.slug);
+    if (!allowedStatuses.has(data.status)) throw new Error(`${file}: invalid status '${data.status}'`);
+    if (collection === "boletines") validateBoletin(data, file);
+    if (collection === "sermones") validateSermon(data, file);
+    // El JSON de preview lo exporta solo el piloto; los otros registros solo se validan.
+    if (collection === "cms-pilot" && data.status === "published") {
+      published.push({
+        title: data.title,
+        slug: data.slug,
+        summary: data.summary ?? "",
+        body,
+        updatedAt: data.updatedAt ?? "",
+        publishedAt: data.publishedAt ?? ""
+      });
+    }
+    validated += 1;
   }
 }
 published.sort((a, b) => (b.publishedAt || b.updatedAt).localeCompare(a.publishedAt || a.updatedAt));
 await writeFile(outputFile, JSON.stringify({ generatedAt: new Date().toISOString(), count: published.length, items: published }, null, 2) + "\n");
-console.log(`Validated ${filenames.length} CMS record(s); exported ${published.length} published record(s) to preview/cms-content.json.`);
+console.log(`Validated ${validated} CMS record(s); exported ${published.length} published record(s) to preview/cms-content.json.`);
