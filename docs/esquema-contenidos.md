@@ -63,7 +63,7 @@ Definidas en `.pages.yml` junto a la colección piloto (que queda intacta y sigu
 | `editionDate` | `date` | sí | ISO `yyyy-mm-dd`. |
 | `editionNumber` | `number` | sí | Entero ≥ 1. |
 | `season` | `text` | no | Tiempo litúrgico, p. ej. «Tiempo después de Pentecostés». |
-| `attachmentUrl` | `text` | no | URL del PDF adjunto (campo de texto, no de archivo). |
+| `attachmentUrl` | `text` | no | URL del PDF adjunto. **Es `text` y no `file`** (aunque el brief del plan decía `file`): es una URL externa, no un asset del repo — ruling del controller. |
 | `body` | `text` | no | HTML literal (ver nota abajo). |
 
 ### Campos exclusivos de `sermones`
