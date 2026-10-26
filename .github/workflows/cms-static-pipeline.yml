@@ -1,0 +1,40 @@
+name: CMS static content pipeline
+
+on:
+  pull_request:
+    branches:
+      - feat/cms-content-model
+    paths:
+      - "content/cms-pilot/**"
+      - "scripts/build-cms-content.mjs"
+      - "preview/**"
+      - "docs/integracion-cms-estatica.md"
+      - ".github/workflows/cms-static-pipeline.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-build:
+    name: Validate CMS records and build preview data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate records and generate JSON
+        run: node scripts/build-cms-content.mjs
+      - name: Ensure draft content is not exported
+        run: |
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const output = JSON.parse(readFileSync("preview/cms-content.json", "utf8"));
+            if (!Array.isArray(output.items)) throw new Error("Output must contain an items array");
+            if (output.items.some((item) => item.status === "draft" || item.reviewNotes)) {
+              throw new Error("Drafts or internal review notes must never be exported");
+            }
+            console.log("Build output is valid; internal notes and draft content are not exported.");
+          '
