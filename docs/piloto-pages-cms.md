@@ -9,7 +9,7 @@
 - `.pages.yml`: configuración inicial de Pages CMS con una sola colección ficticia.
 - `content/cms-pilot/prueba-tecnica-no-oficial.md`: registro ficticio, marcado NO OFICIAL y en estado `draft`.
 - `media/cms-pilot/`: destino aislado para medios de prueba.
-- `.github/workflows/pages-cms-pilot-guard.yml`: control automático de alcance y estructura básica en pull requests.
+- `.github/workflows/pages-cms-pilot-guard.yml`: control automático de alcance y estructura básica en pull requests. **Retirado el 27 oct 2026** en el cierre de la Fase 3: su premisa (una única colección piloto y PRs limitados a esas rutas) quedó obsoleta al hacerse `.pages.yml` multicolección, y no era un check requerido. El histórico sigue en git.
 - Este documento: lista de comprobaciones y criterios de aprobación.
 
 La colección usa `slug` como nombre de archivo y valida que tenga formato de URL. El campo `status` solo es metadato editorial: **no impide por sí mismo la publicación**.

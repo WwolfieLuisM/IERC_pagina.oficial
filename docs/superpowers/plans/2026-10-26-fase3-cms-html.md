@@ -45,7 +45,7 @@
 - Consumes: diseño `docs/diseno-fase3-integracion.md` §colecciones/campos (autoridad).
 - Produce: nombres de colección `boletines` (dir `content/boletines/`) y `sermones` (dir `content/sermones/`), `filename: "{slug}.md"`, `format: yaml-frontmatter`, campos y tipos exactos — Task 2 los consume tal cual.
 
-- [ ] **Step 1: Añadir las colecciones a `.pages.yml`**
+- [x] **Step 1: Añadir las colecciones a `.pages.yml`**
 
 Siguiendo la forma de la colección piloto existente (mismas claves: `name`, `directory`, `filename`, `format`, `fields`), añadir:
 
@@ -76,11 +76,11 @@ Siguiendo la forma de la colección piloto existente (mismas claves: `name`, `di
 
 (Los `options` de `topic` = valores extraídos de los `data-tema` actuales de `ierc-sermones.html`, en ese orden.)
 
-- [ ] **Step 2: Actualizar `docs/esquema-contenidos.md`**
+- [x] **Step 2: Actualizar `docs/esquema-contenidos.md`**
 
 Añadir la tabla de campos por colección (comunes + boletines + sermones) con tipos/requeridos idénticos a Global Constraints, el conjunto cerrado de `topic` con su fuente, la nota «body = HTML literal en el cuerpo del .md», «chips de año: mantenimiento manual fuera de marcadores» y «migración = reflejo de lo en vivo, no declaración de oficialidad».
 
-- [ ] **Step 3: Revisión y commit**
+- [x] **Step 3: Revisión y commit**
 
 Leer el diff completo: nombres de campo en `snakeCase` exactamente como Global Constraints, sin campos de más. Crear la rama de trabajo y commitear (sin push todavía):
 
@@ -104,7 +104,7 @@ Expected: rama creada y commit creado (las Tasks 2-4 siguen en esta misma rama; 
 - Consumes: Task 1 (nombres de colección y campos).
 - Produce: CLI sin argumentos, env única `CMS_ROOT`; valida las 3 colecciones; escribe `preview/cms-content.json` **solo con el piloto** (contrato JSON intacto); errores = `throw` → exit≠0 en stderr. Task 4 añade el render a esta misma función.
 
-- [ ] **Step 1: Escribir los tests nuevos (RED)**
+- [x] **Step 1: Escribir los tests nuevos (RED)**
 
 En `scripts/test-cms-content.mjs`, usando el patrón existente (`spawnSync(process.execPath,[generator],…)` + `mkdtemp` + fixture), añadir 5 casos que arman bajo un root temporal `content/boletines|sermones` con frontmatter válido y rompen UNA regla cada uno:
 
@@ -114,25 +114,25 @@ En `scripts/test-cms-content.mjs`, usando el patrón existente (`spawnSync(proce
 4. `topic fuera del conjunto cerrado → exit≠0`
 5. `slug repetido entre boletines y sermones → exit≠0`
 
-- [ ] **Step 2: Verificar RED**
+- [x] **Step 2: Verificar RED**
 
 Run: `node scripts/test-cms-content.mjs`
 Expected: los 5 nuevos tests FALLAN (el generador aún lee `CMS_CONTENT_DIR` y no valida nada de esto); los 3 existentes pueden pasar o fallar según el harness — migrarlos en el paso siguiente.
 
-- [ ] **Step 3: Migrar el harness a `CMS_ROOT`**
+- [x] **Step 3: Migrar el harness a `CMS_ROOT`**
 
 Reemplazar el uso de `CMS_CONTENT_DIR`/`CMS_OUTPUT_FILE` por `CMS_ROOT`: las fixtures montan `content/cms-pilot|boletines|sermones` y `preview/` bajo el root temporal; las 3 pruebas existentes conservan sus aserciones (solo cambia la env). Eliminar las dos envs antiguas del generador y resolver `CMS_ROOT = process.env.CMS_ROOT ?? path.resolve(script, "..", "..")`.
 
-- [ ] **Step 4: Implementar la validación multi-colección (GREEN)**
+- [x] **Step 4: Implementar la validación multi-colección (GREEN)**
 
 En `build-cms-content.mjs`: recorrer las 3 colecciones con un `Set` global de slugs; por tipo aplicar los requeridos de Global Constraints (boletín: `editionDate` ISO `^\d{4}-\d{2}-\d{2}$` + `editionNumber` entero ≥1; sermón: `sermonDate` ISO; `topic` si presente ∈ `CLOSED_TOPICS` (array literal derivado en Task 1)); mantener el parseador plano, `slugPattern`, `filename===slug`, estados y el export JSON **solo del piloto** sin cambios de contrato.
 
-- [ ] **Step 5: Verificar GREEN**
+- [x] **Step 5: Verificar GREEN**
 
 Run: `node scripts/test-cms-content.mjs`
 Expected: los 8 tests PASS, salida sin warnings
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 Run: `git add scripts/build-cms-content.mjs scripts/test-cms-content.mjs && git commit -m "feat(cms): validación multi-colección con env única CMS_ROOT"`
 Expected: commit creado
@@ -150,26 +150,26 @@ Expected: commit creado
 - Consumes: Task 1 (campos), Task 2 (validador ya en verde).
 - Produce: 4 bloques marcados con su contenido actual dentro; 7 registros `status: published` que validan en 0 — Task 4 los renderiza.
 
-- [ ] **Step 1: Extraer el contenido actual SIN editarlo aún**
+- [x] **Step 1: Extraer el contenido actual SIN editarlo aún**
 
 Leer los 3 HTML y anotar, por sección, el rango exacto de líneas que irá dentro de los marcadores, los formatos de fecha reales (cabecera del boletín y columna de fecha de filas) y los valores `data-tema` de las 6 filas (conjunto cerrado de `topic`).
 
-- [ ] **Step 2: Insertar los 4 bloques marcadores**
+- [x] **Step 2: Insertar los 4 bloques marcadores**
 
 Con la herramienta `edit`, envolver el contenido actual de cada sección en sus marcadores `IERC:BEGIN/END` + línea de advertencia; **el contenido dentro no cambia ni una coma** (insertar solo las líneas de comentario, una antes y una después del bloque existente + la advertencia justo tras el BEGIN).
 
-- [ ] **Step 3: Crear los 7 registros**
+- [x] **Step 3: Crear los 7 registros**
 
 `edicion-142.md` con `editionNumber: 142`, `editionDate: 2026-10-18`, `season` = el texto actual exacto, `body` = el HTML actual del interior (después de la cabecera; ver Nota), `status: published`. Los 6 sermones con `sermonDate`/`topic`/`durationMinutes` copiados literalmente de las filas actuales, `title` = título actual, `summary`/`preacher`/`scriptureReference` = lo que las filas ya muestren (si un campo no aparece hoy, se omite del frontmatter — no se inventa). Todos `status: published`, `reviewNotes` vacío.
 
 **Nota (frontera cabecera/cuerpo):** `boletin-body` incluye la cabecera; la cabecera se renderiza en Task 4 desde `editionNumber/editionDate/season`, así que en este paso `body` queda SOLO con el contenido bajo la cabecera (la cabecera se deja dentro del marcador a mano; T4 la sustituirá por su render hasta dejar byte-idéntico).
 
-- [ ] **Step 4: Validar sin tocar el HTML**
+- [x] **Step 4: Validar sin tocar el HTML**
 
 Run: `node scripts/build-cms-content.mjs`
 Expected: exit 0, imprime el resumen; luego `git diff --stat` muestra **solo** las 3 líneas-de-marcador por sección añadidas (comentarios) y ningún byte de contenido alterado
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 Run: `git add ierc-boletin.html ierc-sermones.html ierc-index.html content/ && git commit -m "feat(cms): marcadores IERC y migración de boletín 142 + sermones a registros"`
 Expected: commit creado
@@ -186,7 +186,7 @@ Expected: commit creado
 - Consumes: Task 2 (CLI/env), Task 3 (marcadores y registros reales).
 - Produce: el generador reescribe los 4 bloques entre marcadores; secciones/HTML ausentes → error; sección sin `published` → no toca + aviso. Env `CMS_ROOT` (fixtures de test montan HTML con marcadores).
 
-- [ ] **Step 1: Escribir los tests del renderer (RED)**
+- [x] **Step 1: Escribir los tests del renderer (RED)**
 
 Fixture por test: root temporal con HTML mini (un `<section>` con marcadores BEGIN/END reales y contenido de relleno) + colección correspondiente. Casos:
 
@@ -198,26 +198,26 @@ Fixture por test: root temporal con HTML mini (un `<section>` con marcadores BEG
 6. `reviewNotes no aparece en ningún HTML generado` (búsqueda en el archivo)
 7. `fixture con CRLF → tras render el archivo conserva \r\n` (cuenta `\r\n`, cero `\n` sueltos)
 
-- [ ] **Step 2: Verificar RED**
+- [x] **Step 2: Verificar RED**
 
 Run: `node scripts/test-cms-content.mjs`
 Expected: los 7 nuevos FALLAN (no existe render), los 8 previos siguen PASS
 
-- [ ] **Step 3: Implementar `renderHtmlSections(root)` (GREEN)**
+- [x] **Step 3: Implementar `renderHtmlSections(root)` (GREEN)**
 
 Por sección: plantilla del marcado actual **copiada byte a byte** de los HTML (clases/`data-*` intactos); entrada = registros `published` ordenados (sermones por `sermonDate` desc; `sermon-tira` = 3 más recientes; `boletin-tarjeta` = boletín más reciente; fechas con mes en español derivado del HTML actual, array literal de 12 meses). Sustituir SOLO lo de dentro de los marcadores, uniendo con el EOL detectado en el archivo; marcador/HTML inexistente → `throw`; sin `published` → no escribir + `console.error` de aviso. Si la sección ya coincide byte a byte, no hay cambio visible.
 
-- [ ] **Step 4: Verificar GREEN**
+- [x] **Step 4: Verificar GREEN**
 
 Run: `node scripts/test-cms-content.mjs`
 Expected: los 15 tests PASS
 
-- [ ] **Step 5: Regenerar sobre el repo real y exigir cero diff**
+- [x] **Step 5: Regenerar sobre el repo real y exigir cero diff**
 
 Run: `node scripts/build-cms-content.mjs && git diff --exit-code -- '*.html'`
 Expected: exit 0 — si hay diff, ajustar plantilla/frontera cabecera (T3 Nota) hasta que el contenido actual reproduzca idéntico; NUNCA «arreglar» a mano el HTML para que cuadre
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 Run: `git add scripts/ && git commit -m "feat(cms): renderizador por marcadores idempotente con preservación de EOL"`
 Expected: commit creado
@@ -234,7 +234,7 @@ Expected: commit creado
 - Consumes: Task 4 (generador completo) y Task 2/4 (tests).
 - Produce: todo PR ejecuta tests + build + `git diff --exit-code -- '*.html'`; el check `Validate CMS records and build preview data` es obligatorio para mergear en `master`.
 
-- [ ] **Step 1: Ampliar el workflow (en la rama de trabajo `feat/fase3-cms-html`)**
+- [x] **Step 1: Ampliar el workflow (en la rama de trabajo `feat/fase3-cms-html`)**
 
 Sin crear ramas nuevas — esta rama llevará todo el trabajo de T1-T4 y este cambio en un único PR. En el workflow: trigger `pull_request` **en todas las ramas y SIN filtro `paths`** (ruling de preflight: un check obligatorio que no corre en un PR bloquea su merge — los PRs solo-de-docs también deben dispararlo) y añadir `push: { branches: [master] }`. Al final del job, step:
 
@@ -245,11 +245,11 @@ Sin crear ramas nuevas — esta rama llevará todo el trabajo de T1-T4 y este ca
     git diff --exit-code -- '*.html'
 ```
 
-- [ ] **Step 2: Push + PR con todo el trabajo + merge**
+- [x] **Step 2: Push + PR con todo el trabajo + merge**
 
 `git push -u origin feat/fase3-cms-html` → `gh pr create` (T1-T5: colecciones, validación, marcadores, render, CI) → esperar que el workflow nuevo corra en el PR y pase → `gh pr merge --squash --delete-branch`. Luego verificar que en `master` aparece una ejecución verde del workflow (`gh run list --branch master --limit 3`): **orden obligatorio** — GitHub exige que el check haya corrido una vez en la base antes de poder marcarlo como requerido.
 
-- [ ] **Step 3: Añadir el required check (re-PUT de la protección completa)**
+- [x] **Step 3: Añadir el required check (re-PUT de la protección completa)**
 
 `gh api -X PUT repos/WwolfieLuisM/IERC_pagina.oficial/branches/master/protection` con TODO el JSON actual preservado (PR obligatorio, `enforce_admins: true`, `dismiss_stale_reviews: true`, `required_approving_review_count: 0`, `allow_force_pushes: false`, `allow_deletions: false`) **más**:
 
@@ -257,11 +257,11 @@ Sin crear ramas nuevas — esta rama llevará todo el trabajo de T1-T4 y este ca
 "required_status_checks": { "strict": true, "contexts": ["Validate CMS records and build preview data"] }
 ```
 
-- [ ] **Step 4: Verificar la puerta con un PR roto (Review Focus 5)**
+- [x] **Step 4: Verificar la puerta con un PR roto (Review Focus 5)**
 
 Rama `test/pr-roto`, editar `content/sermones/*.md` a un `sermonDate` no ISO, push, `gh pr create`. Esperar el check en rojo → `gh pr merge --squash` → Expected: **rechazado** (required check failing). Cerrar el PR (`gh pr close`) y borrar la rama. Probar también la vía buena no es necesaria (la hará T6).
 
-- [ ] **Step 5: Commit del estado**
+- [x] **Step 5: Commit del estado**
 
 Registrar en el PR de T6 (Task 6) los SHAs; aquí solo verificar con `gh api repos/…/branches/master/protection` que `required_status_checks.contexts` contiene el nombre exacto.
 
@@ -278,17 +278,17 @@ Registrar en el PR de T6 (Task 6) los SHAs; aquí solo verificar con `gh api rep
 **Interfaces:**
 - Consumes: Tasks 1–5 (hechos y sus SHAs).
 
-- [ ] **Step 1: Actualizar los 3-4 docs** con la herramienta `edit` (cero PowerShell), marcando qué queda pendiente (oficialidad, editores, approvals=1).
+- [x] **Step 1: Actualizar los 3-4 docs** con la herramienta `edit` (cero PowerShell), marcando qué queda pendiente (oficialidad, editores, approvals=1).
 
-- [ ] **Step 2: Verificación final de regresión completa**
+- [x] **Step 2: Verificación final de regresión completa**
 
 Run: `node scripts/test-cms-content.mjs && node scripts/build-cms-content.mjs && git diff --exit-code -- '*.html'`
 Expected: 15 tests PASS, exit 0, cero diff
 
-- [ ] **Step 3: Rama, PR, merge y comprobación en vivo**
+- [x] **Step 3: Rama, PR, merge y comprobación en vivo**
 
 Push de rama `docs/fase3-cierre`, `gh pr create`, esperar check verde, `gh pr merge --squash --delete-branch`. Abrir `https://wwolfieluism.github.io/IERC_pagina.oficial/` y las 3 páginas: idénticas a antes (0 errores de consola, sin overflow). Expected: visualmente sin cambios.
 
-- [ ] **Step 4: Estado final en los docs**
+- [x] **Step 4: Estado final en los docs**
 
 Si el PR mergeó, marcar el plan como completado; reportar en el mensaje final: SHAs por tarea, evidencia de la puerta (PR roto rechazado), y lo delegado a humanos (oficialidad/editores).
