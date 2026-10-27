@@ -323,7 +323,7 @@ Este README describe el plan y los criterios del proyecto; no implica que las fa
 
 ---
 
-## Estado real del trabajo — 25 de octubre de 2026
+## Estado real del trabajo — 27 de octubre de 2026
 
 Este estado diferencia documentación creada de trabajo técnico aún no implementado.
 
@@ -332,9 +332,11 @@ Este estado diferencia documentación creada de trabajo técnico aún no impleme
 - [x] Fase 1 documental: comparación de CMS y recomendación de piloto en [`docs/decision-cms.md`](docs/decision-cms.md).
 - [x] Modelo lógico de contenidos en [`docs/esquema-contenidos.md`](docs/esquema-contenidos.md).
 - [x] Confirmar desde GitHub Settings → Pages la fuente real de despliegue (API de GitHub, 26 oct 2026: rama `master`, ruta `/`, estado `built`).
-- [x] Fases 2 y 3 técnicas integradas vía PR (#2, #5, #4): piloto aislado, modelo editorial y pipeline estático con tests; ver `docs/fases-implementacion-cms.md`.
+- [x] Fases 2 y 3 (modelo y pipeline piloto) integradas vía PR (#2, #5, #4): piloto aislado, modelo editorial y pipeline estático con tests; ver `docs/fases-implementacion-cms.md`.
+- [x] Fase 3 (CMS → HTML) completada: PR #8 (squash `ea89c61`, commits T1–T5 `1f8de05`→`18d294f`→`dfbee62`→`b622ab9`→`b77ceb8`) — generador multicolección con env `CMS_ROOT`, render entre marcadores `<!-- IERC:BEGIN/END -->`, 15/15 pruebas, idempotencia verificada en CI (`git diff --exit-code -- '*.html'`) y required check «Validate CMS records and build preview data» (`strict: true`) activo en todos los PRs. Boletín 142 y 6 sermones migrados como registros `published` (reflejo de lo ya publicado, sin declarar oficialidad).
 - [ ] La congregación debe confirmar qué contenido es oficial y designar editores/aprobadores.
 - [ ] Ejecutar y evaluar el piloto técnico de Pages CMS antes de aprobar su integración (CI aprobada; pruebas manuales del editor y permisos pendientes — ver `docs/piloto-pages-cms.md`).
+- [ ] Subir `required_approving_review_count` a 1 en la protección de `master` cuando exista un segundo revisor, y documentar el rollback de la protección (ver `docs/fases-implementacion-cms.md`, Fase 4).
 
 ### Resultado de auditoría que condiciona las siguientes fases
 
@@ -342,4 +344,4 @@ Los HTML actuales contienen comentarios explícitos de contenido de muestra o pe
 
 ### Próximo paso verificable
 
-La rama de prueba `test/pages-cms-pilot` y su CI ya existen y están integradas. Falta la parte manual: seguir la lista de `docs/piloto-pages-cms.md` (abrir Pages CMS, autorizar la GitHub App solo para este repositorio, demostrar el ciclo borrador → revisión → publicación → retirada con datos de prueba, revisar permisos). No alterar la página pública ni cargar contenido institucional sin aprobación humana.
+La Fase 3 (CMS → HTML) ya está en `master` vía PR #8, con la puerta CI activa en todos los PRs y el guard obsoleto del piloto retirado. Queda, por este orden: (1) confirmación humana de qué contenido es oficial y designación de editores/aprobadores; (2) la parte manual del piloto de Pages CMS (lista en `docs/piloto-pages-cms.md`); (3) subir `required_approving_review_count` a 1 cuando exista un segundo revisor y documentar el rollback de la protección de rama. No cargar contenido institucional nuevo ni dar por oficial nada migrado sin aprobación humana.
